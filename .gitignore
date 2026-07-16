@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.env
+node_modules/
+dist/
+build/
+*.log
+.venv/
+venv/
+saved_models/*.pt
+.DS_Store
