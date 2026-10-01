@@ -1080,8 +1080,5 @@ See the [LICENSE](LICENSE) file for details.
 
 **Joshna Rose J.N.**
 
-GitHub:  
-https://github.com/joshna1210
-
 Project Repository:  
 https://github.com/joshna1210/DEFENZA-WAF
