@@ -14,7 +14,8 @@ services:
       dockerfile: infrastructure/docker/backend.Dockerfile
     ports:
       - "8000:8000"
-    env_file: .env
+    env_file:
+      - .env
     environment:
       - MONGO_URI=mongodb://mongodb:27017
     depends_on:
@@ -26,9 +27,13 @@ services:
       dockerfile: infrastructure/docker/proxy.Dockerfile
     ports:
       - "9000:9000"
-    env_file: .env
+    env_file:
+      - .env
     environment:
+      - TARGET_URL=http://host.docker.internal:5000
       - BACKEND_URL=http://backend:8000
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - backend
 
@@ -38,17 +43,12 @@ services:
       dockerfile: infrastructure/docker/frontend.Dockerfile
     ports:
       - "5173:5173"
+    env_file:
+      - .env
     environment:
       - BACKEND_URL=http://backend:8000
     depends_on:
       - backend
-
-  # Optional: uncomment once you want a local chain for BLOCKCHAIN_ENABLED=true
-  # ganache:
-  #   image: trufflesuite/ganache:latest
-  #   ports:
-  #     - "8545:8545"
-  #   command: --wallet.deterministic
 
 volumes:
   mongo_data:

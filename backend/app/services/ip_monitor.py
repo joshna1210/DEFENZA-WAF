@@ -3,7 +3,7 @@ Tracks per-IP request behavior: volume, blocked ratio, average risk, and
 simple burst-based flagging (naive rate anomaly detection). GeoIP lookup is
 stubbed behind GEOIP_ENABLED so the pipeline works offline by default.
 """
-from datetime import timedelta
+from datetime import timedelta, timezone
 from app.config.database import ip_activity, traffic_logs
 from app.utils.helpers import now_utc
 from app.config.settings import settings
@@ -32,7 +32,10 @@ async def record_request(ip: str, blocked: bool, risk_score: float):
         )
         return
 
-    recent = [t for t in existing.get("recent_timestamps", []) if now - t < timedelta(seconds=BURST_WINDOW_SECONDS)]
+    recent = [
+        t for t in existing.get("recent_timestamps", [])
+        if (now - (t.replace(tzinfo=timezone.utc) if t.tzinfo is None else t)) < timedelta(seconds=BURST_WINDOW_SECONDS)
+    ]
     recent.append(now)
     flagged = len(recent) >= BURST_REQUEST_THRESHOLD or existing.get("flagged", False)
 
@@ -79,3 +82,4 @@ async def list_ips(limit: int = 100, flagged_only: bool = False):
             }
         )
     return results
+

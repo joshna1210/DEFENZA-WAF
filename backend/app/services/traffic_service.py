@@ -50,12 +50,20 @@ async def _analyze_and_react(traffic_id: str, event: TrafficIngest):
         )
         await ip_monitor.record_request(event.ip, event.blocked, result["risk_score"])
 
-        if result["risk_level"] in ("high", "critical"):
+        if event.blocked or result["risk_level"] in ("high", "critical"):
+            category = result["category"]
+            if event.blocked and (category == "benign" or not category):
+                category = event.block_reason or "security_violation"
+
+            risk_score = result["risk_score"]
+            if event.blocked and risk_score < 0.7:
+                risk_score = 0.9
+
             await alert_service.raise_alert(
                 traffic_id=traffic_id,
                 ip=event.ip,
-                category=result["category"],
-                risk_score=result["risk_score"],
+                category=category,
+                risk_score=risk_score,
             )
     except Exception:
         logger.exception(f"Failed to analyze traffic_id={traffic_id}")
