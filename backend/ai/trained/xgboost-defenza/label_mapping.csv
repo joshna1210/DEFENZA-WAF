@@ -1,0 +1,6 @@
+id,label
+0,benign
+1,sqli
+2,xss
+3,cmdi
+4,path_traversal

@@ -9,3 +9,34 @@ build/
 venv/
 saved_models/*.pt
 .DS_Store
+# DEFENZA generated ML datasets
+backend/ai/datasets/
+
+# DEFENZA generated evaluation outputs
+backend/ai/training/*_results.csv
+
+# Hugging Face training checkpoints
+backend/ai/trained/*/checkpoint-*/
+
+# Python/cache
+__pycache__/
+*.pyc
+
+# Environment
+.env
+.venv/
+venv/
+
+# Frontend
+node_modules/
+dist/
+build/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+
+# Existing saved models
+saved_models/*.pt
