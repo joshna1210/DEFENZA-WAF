@@ -34,7 +34,7 @@ support intelligent threat detection and response.
 - Security event logging
 - Blockchain-based tamper-evident audit logging
 - Security monitoring dashboard
-- Docker-based deployment
+- Docker-based deployments
 
 ---
 
